@@ -238,7 +238,7 @@ public class NewOrderClass extends JFrame {
 					Class.forName("com.mysql.jdbc.Driver").newInstance();
 					Connection connection = DriverManager.getConnection(url, user, pass);
 					Statement st = connection.createStatement();
-					st.executeUpdate("insert into iorder(date, total_price, status) values(CURDATE(), "+lblTotalValue.getText()+", 'батлагдсан')");
+					st.executeUpdate("insert into iorder(date, total_price, status) values(NOW(), "+lblTotalValue.getText()+", 'batlagdsan')");
 
 					ResultSet res = st.executeQuery("select max(id)as id from iorder;");
 					res.next();

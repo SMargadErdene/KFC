@@ -29,8 +29,6 @@ public class ProductController {
 	private Stage inventoryStage;
 	public ProductInventoryController inventoryController;
 
-	private Stage stageProductController;
-
 	@FXML
 	private Button handle_picture;
 	@FXML

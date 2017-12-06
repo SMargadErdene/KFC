@@ -32,6 +32,7 @@ public class OrderListClass extends Application {
 		Statement st = connection.createStatement();
 		ResultSet rs = st.executeQuery("select * from iorder;");
 		while (rs.next()) {
+			System.out.println(rs.getString("date"));
 			orderData.add(new Order(rs.getInt("id"), rs.getString("date"), rs.getInt("total_price"), rs.getString("status")));
 		}
 		rs.close();

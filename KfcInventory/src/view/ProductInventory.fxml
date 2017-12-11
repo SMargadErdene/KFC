@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="450.0" prefWidth="600.0" stylesheets="@ProductInventory.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ProductInventoryController">
@@ -30,12 +32,12 @@
             </AnchorPane>
             <AnchorPane id="back" maxHeight="450.0" maxWidth="450.0" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="lblName" alignment="CENTER" contentDisplay="CENTER" layoutX="69.0" layoutY="14.0" prefHeight="30.0" prefWidth="285.0" text="Label" AnchorPane.bottomAnchor="409.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
+                  <Label fx:id="lblName" alignment="CENTER" contentDisplay="CENTER" layoutX="69.0" layoutY="14.0" prefHeight="30.0" prefWidth="285.0" text="Label" AnchorPane.bottomAnchor="416.0" AnchorPane.rightAnchor="40.0">
                      <font>
                         <Font name="Times New Roman Bold" size="25.0" />
                      </font>
                   </Label>
-                  <GridPane hgap="10.0" layoutX="30.0" layoutY="70.0" vgap="5.0" AnchorPane.bottomAnchor="275.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="60.0">
+                  <GridPane hgap="10.0" layoutX="30.0" layoutY="70.0" vgap="5.0" AnchorPane.bottomAnchor="275.0" AnchorPane.rightAnchor="50.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="141.0" minWidth="10.0" prefWidth="75.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.0" minWidth="10.0" prefWidth="210.0" />
@@ -67,46 +69,24 @@
                               <Font name="Times New Roman Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblId" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="122.0" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                           <font>
-                              <Font name="Times New Roman Bold" size="14.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <Label fx:id="lblStatus" alignment="CENTER" contentDisplay="CENTER" layoutX="153.0" layoutY="15.0" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-                           <font>
-                              <Font name="Times New Roman Bold" size="14.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <Label fx:id="lblCategory" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="15.0" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <font>
-                              <Font name="Times New Roman Bold" size="14.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <Label fx:id="lblPrice" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="15.0" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                           <font>
-                              <Font name="Times New Roman Bold" size="14.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin>
-                        </Label>
+                        <TextField fx:id="txtId" GridPane.columnIndex="1" />
+                        <TextField fx:id="txtPrice" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtStatus" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="cboxCategory" editable="true" prefHeight="26.0" prefWidth="202.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
-                  <ImageView id="back" fx:id="imageView" fitHeight="170.0" fitWidth="330.0" layoutX="29.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="210.0" />
-                  <ButtonBar layoutX="14.0" layoutY="385.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="400.0">
+                  <VBox alignment="CENTER" prefHeight="170.0" prefWidth="330.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
+                     <children>
+                        <ImageView id="back" fx:id="imageView" fitHeight="170.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </VBox>
+                  <Button fx:id="btnSave" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#btnSaveAction" text="Хадгалах" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="235.0" AnchorPane.topAnchor="410.0" />
+                  <Button fx:id="btnNotEdit" alignment="CENTER" mnemonicParsing="false" onAction="#btnNotEditAction" text="Хэрэгсэхгүй" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="115.0" />
+                  <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="48.0" prefWidth="390.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="20.0">
                     <buttons>
-                      <Button fx:id="btnCreate" defaultButton="true" maxWidth="80.0" mnemonicParsing="false" onAction="#btnCreateAction" text="Үүсгэх" />
-                        <Button fx:id="btnEdit" maxWidth="80.0" mnemonicParsing="false" onAction="#btnEditAction" text="Засах" />
-                        <Button fx:id="btnDelete" maxWidth="80.0" mnemonicParsing="false" onAction="#btnDeleteAction" prefHeight="26.0" text="Устгах" />
+                      <Button fx:id="btnCreate" alignment="CENTER" defaultButton="true" maxWidth="80.0" mnemonicParsing="false" onAction="#btnCreateAction" text="Үүсгэх" />
+                        <Button fx:id="btnEdit" alignment="CENTER" maxWidth="80.0" mnemonicParsing="false" onAction="#btnEditAction" text="Засах" />
+                        <Button fx:id="btnDelete" alignment="CENTER" maxWidth="80.0" mnemonicParsing="false" onAction="#btnDeleteAction" prefHeight="26.0" text="Устгах" />
                     </buttons>
                   </ButtonBar>
                </children>

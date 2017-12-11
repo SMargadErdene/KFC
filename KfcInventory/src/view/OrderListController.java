@@ -85,7 +85,6 @@ public class OrderListController {
 	void actionDelete(ActionEvent event) {
 		Order deleteOrder = orderTableView.getSelectionModel().getSelectedItem();
 		int id = deleteOrder.getId();
-		System.out.println(deleteOrder+", "+id+"");
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			Connection connection = DriverManager.getConnection(orderClass.url, orderClass.user, orderClass.pass);
@@ -141,6 +140,9 @@ public class OrderListController {
 		this.orderClass = orderApp;
 //		imageViewKFC.setImage(new Image(OrderListClass.class.getResourceAsStream("/image/kfclogo.png")));
 		orderTableView.setItems(orderApp.getItemData());
+		if(orderApp.getItemData().size() > 0) {
+			orderTableView.getSelectionModel().select(0);
+		}
 		// initCategoryData();
 	}
 

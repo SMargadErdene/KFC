@@ -102,7 +102,7 @@ public class NewOrderClass extends JFrame {
 
 		// adding item rows to the itemTable
 		while (rs.next() && rs != null) {				
-			imageIcon= new ImageIcon(getClass().getResource("/image/"+rs.getString("name")+".PNG"));			
+			imageIcon= new ImageIcon(getClass().getResource("/image/new/"+rs.getString("name")+".png"));			
 			itemTableModel.addRow(new Object[] { rs.getInt("id"), rs.getString("name"), rs.getInt("price"), imageIcon });			
 		}
 		rs.close();
@@ -111,14 +111,14 @@ public class NewOrderClass extends JFrame {
 		// make design itemtable
 		itemTable.setTableHeader(null);
 		itemTable.setGridColor(Color.LIGHT_GRAY);
-		itemTable.setSelectionBackground(Color.LIGHT_GRAY);
+		itemTable.setSelectionBackground(Color.CYAN);
 		itemTable.setSelectionForeground(Color.BLACK);
 		itemTable.setRowSelectionAllowed(true);
 		// hide id, name, price column
-		itemTable.getColumnModel().getColumn(2).setMinWidth(0);
-		itemTable.getColumnModel().getColumn(2).setMaxWidth(0);
-		itemTable.getColumnModel().getColumn(1).setMinWidth(0);
-		itemTable.getColumnModel().getColumn(1).setMaxWidth(0);
+		itemTable.getColumnModel().getColumn(2).setMinWidth(temp/3);
+		itemTable.getColumnModel().getColumn(2).setMaxWidth(temp/3);
+		itemTable.getColumnModel().getColumn(1).setMinWidth(temp/3);
+		itemTable.getColumnModel().getColumn(1).setMaxWidth(temp/3);
 		itemTable.getColumnModel().getColumn(0).setMinWidth(0);
 		itemTable.getColumnModel().getColumn(0).setMaxWidth(0);
 		itemTable.getColumnModel().getColumn(3).setMaxWidth(temp);
@@ -152,7 +152,7 @@ public class NewOrderClass extends JFrame {
 		
 		// adding rows to the setTable
 		while (res.next()) {			
-			imageIcon= new ImageIcon(getClass().getResource("/image/"+res.getString("name")+".PNG"));
+			imageIcon= new ImageIcon(getClass().getResource("/image/new/"+res.getString("name")+".png"));
 			setTableModel.addRow(new Object[] { res.getInt("id"), res.getString("name"), res.getInt("price"), imageIcon });			
 			
 		}
@@ -162,17 +162,17 @@ public class NewOrderClass extends JFrame {
 		// table design
 		setTable.setTableHeader(null);
 		setTable.setGridColor(Color.LIGHT_GRAY);
-		setTable.setSelectionBackground(Color.LIGHT_GRAY);
+		setTable.setSelectionBackground(Color.CYAN);
 		setTable.setSelectionForeground(Color.BLACK);
 		setTable.setRowSelectionAllowed(true);
 		// hide id, name, price column
-		setTable.getColumnModel().getColumn(2).setMinWidth(0);
-		setTable.getColumnModel().getColumn(2).setMaxWidth(0);
-		setTable.getColumnModel().getColumn(1).setMinWidth(0);
-		setTable.getColumnModel().getColumn(1).setMaxWidth(0);
+		setTable.getColumnModel().getColumn(2).setMinWidth(temp/3);
+		setTable.getColumnModel().getColumn(2).setMaxWidth(temp/3);
+		setTable.getColumnModel().getColumn(1).setMinWidth(temp/3);
+		setTable.getColumnModel().getColumn(1).setMaxWidth(temp/3);
 		setTable.getColumnModel().getColumn(0).setMinWidth(0);
 		setTable.getColumnModel().getColumn(0).setMaxWidth(0);
-		itemTable.getColumnModel().getColumn(3).setMaxWidth(temp);
+		itemTable.getColumnModel().getColumn(3).setMaxWidth(temp/3);
 		
 		// placing setTable into a scrollPane
 		JScrollPane setScroll = new JScrollPane(setTable);
@@ -226,6 +226,7 @@ public class NewOrderClass extends JFrame {
 		pnlTotalValue.add(jbtnPrint);
 		pnlSelected.add(pnlTotalValue, BorderLayout.CENTER);
 		add(pnlSelected, BorderLayout.EAST);
+		jbtnPrint.setEnabled(false);
 		settingsButton();
 	}
 
@@ -269,15 +270,12 @@ public class NewOrderClass extends JFrame {
 //					alert.setHeaderText(null);
 //					alert.showAndWait();
 				} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-//				finally{
-//					selectedItemTableModel.setRowCount(0);
-//				}
+				jbtnSave.setEnabled(false);
+				jbtnPrint.setEnabled(true);
 			}
 		});
 
@@ -286,6 +284,8 @@ public class NewOrderClass extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				selectedItemTableModel.setRowCount(0);
+				jbtnSave.setEnabled(true);
+				jbtnPrint.setEnabled(false);
 			}
 		});
 
@@ -390,7 +390,7 @@ public class NewOrderClass extends JFrame {
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("button clicked");
+					System.out.println("товч дарагдлаа");
 					fireEditingStopped();
 				}
 			});
@@ -408,7 +408,6 @@ public class NewOrderClass extends JFrame {
 			label = ("Устгах");
 
 			isPushed = true;
-			System.out.println(row);
 
 			// when pushed it deletes the row or decrease the quantity
 			int selectedItemPrice = (int) table.getModel().getValueAt(row, 3);

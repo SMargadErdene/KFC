@@ -71,9 +71,6 @@ public class ProductController {
 			if (res.next()) {
 				cat_id = res.getInt("id");
 			}
-			System.out.println("INSERT INTO item(name, price, status, category_id) VALUES('" + txtItemName.getText()
-					+ "', " + Integer.parseInt(txtUnitPrice.getText()) + ",'" + txtDescription.getText() + "'," + cat_id
-					+ ");");
 			int rs = st
 					.executeUpdate("INSERT INTO item(name, price, status, category_id) VALUES('" + txtItemName.getText()
 							+ "', " + txtUnitPrice.getText() + ",'" + txtDescription.getText() + "'," + cat_id + ");");
@@ -126,7 +123,9 @@ public class ProductController {
 
 	public void computeCategory() {
 		cboxCategory.setItems(inventoryController.getCategoryData());
-		cboxCategory.getSelectionModel().select(0);
+		if(inventoryController.getCategoryData().size() > 0) {
+			cboxCategory.getSelectionModel().select(0);
+		}
 	}
 
 	public void setProductInventoryState(Stage stage) {

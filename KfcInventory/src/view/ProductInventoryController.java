@@ -3,7 +3,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.*;
+import java.util.ResourceBundle;
 
 import application.Category;
 import application.Item;
@@ -15,20 +17,23 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class ProductInventoryController {
+public class ProductInventoryController implements Initializable{
 
 	private ProductInventoryClass inventoryClass;
 	private ProductController productCont;
@@ -44,22 +49,36 @@ public class ProductInventoryController {
     private TableColumn<Item, String> NameColumn;
     @FXML
     private Label lblName;
+
     @FXML
-    private Label lblId;
+    private TextField txtId;
+
     @FXML
-    private Label lblStatus;
+    private TextField txtPrice;
+
     @FXML
-    private Label lblCategory;
+    private TextField txtStatus;
+
     @FXML
-    private Label lblPrice;
-    @FXML
-    private Button btnCreate;
-    @FXML
-    private Button btnEdit;
-    @FXML
-    private Button btnDelete;
+    private ComboBox<String> cboxCategory;
+
     @FXML
     private ImageView imageView;
+
+    @FXML
+    private Button btnSave;
+
+    @FXML
+    private Button btnNotEdit;
+
+    @FXML
+    private Button btnCreate;
+
+    @FXML
+    private Button btnEdit;
+
+    @FXML
+    private Button btnDelete;
     
     @FXML
     void btnCreateAction(ActionEvent event) {
@@ -140,42 +159,52 @@ public class ProductInventoryController {
 
     @FXML
     void btnEditAction(ActionEvent event) {
-
+    	stateEdit();
+    	int temp_id = itemViewTable.getSelectionModel().getSelectedItem().getCategory_id();
+    	int index = 0;
+		for (Category cat : categoryData)
+			if(cat.id == temp_id)
+				break;
+			++index;
+		if(index != 0) {
+			cboxCategory.getSelectionModel().select(index);
+		}
+    }
+    
+    @FXML
+    void btnNotEditAction(ActionEvent event) {
+    	System.out.println("A");
+    	stateNotEdit();
+    }
+    
+    @FXML
+    void btnSaveAction(ActionEvent event) {
+    	System.out.println("B");
+    	stateNotEdit();
     }
 
     private void showItemDetails(Item item) {
         if (item != null) {
             // Fill the labels with info from the person object.
-        	lblId.setText(String.valueOf(item.getId()));
+        	txtId.setText(String.valueOf(item.getId()));
         	lblName.setText(item.getName());
-        	lblPrice.setText(String.valueOf(item.getPrice()));
-        	lblStatus.setText(item.getStatus());
-        	try {
-				Class.forName("com.mysql.jdbc.Driver").newInstance();
-				String connectionUrl = "jdbc:mysql://localhost:3306/kfc";
-	    		Connection connection = DriverManager.getConnection(inventoryClass.url, inventoryClass.user, inventoryClass.pass);
-	    		Statement st = connection.createStatement();
-	    		ResultSet rs = st.executeQuery("select name from category where id="+item.getCategory_id()+";");
-				if(rs.next()) {
-	        		lblCategory.setText(rs.getString("name"));
-	        	}else {
-	        		lblCategory.setText("");
-	        	}
-				rs.close();
-				st.close();
-				connection.close();
-			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-        	InputStream inStream = getClass().getResourceAsStream("/image/"+lblName.getText()+".PNG");
+        	txtPrice.setText(String.valueOf(item.getPrice()));
+        	txtStatus.setText(item.getStatus());
+			int index = 0;
+    		for (Category cat : categoryData)
+				if(cat.id == item.getCategory_id())
+					break;
+    			++index;
+    		if(index != 0) {
+    			cboxCategory.getSelectionModel().select(index);
+    		}
+        	InputStream inStream = getClass().getResourceAsStream("/image/new/"+lblName.getText()+".png");
         	if(inStream != null) {
         		Image imageObject = new Image(inStream);
             	imageView.setImage(imageObject);
         	}else {
         		Alert alert = new Alert(AlertType.ERROR);
-				alert.setContentText("lblName.getText()+\"нэртэй зураг олдсонгүй!");
+				alert.setContentText(lblName.getText()+" нэртэй зураг олдсонгүй!");
 				alert.setTitle("Амжилтгүй!");
 				alert.setHeaderText(null);
 				alert.showAndWait();
@@ -183,11 +212,11 @@ public class ProductInventoryController {
         	}
         } else {
             // Item is null, remove all the text.
-        	lblId.setText("");
+        	txtId.setText("");
         	lblName.setText("");
-        	lblPrice.setText("");
-        	lblStatus.setText("");
-        	lblCategory.setText("");
+        	txtPrice.setText("");
+        	txtStatus.setText("");
+        	cboxCategory.setItems(null);
         }
     }
     
@@ -199,9 +228,15 @@ public class ProductInventoryController {
 
 	public void setProductInventoryClassState(Stage stage) {
 		this.inventoryStage = stage;
+		cboxCategory.setItems(this.getCategoryData());
 		IdColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty());
 		NameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-		showItemDetails(null);
+		if(categoryData.size() > 0) {
+			itemViewTable.getSelectionModel().select(0);
+			showItemDetails(itemViewTable.getSelectionModel().getSelectedItem());
+		}else {
+			showItemDetails(null);
+		}
 		itemViewTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showItemDetails(newValue));
 	}
 	
@@ -231,6 +266,48 @@ public class ProductInventoryController {
 			categoryList.add(cat.getName());
 		return categoryList;
 	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		stateNotEdit();
+	}
 	
+	public void stateNotEdit() {
+		btnCreate.setVisible(true);
+    	btnEdit.setVisible(true);
+    	btnSave.setDisable(false);
+		btnNotEdit.setDisable(false);
+//		btnCreate.setDisable(false);
+//		btnEdit.setDisable(false);
+//		btnSave.setDisable(true);
+//		btnNotEdit.setDisable(true);
+		btnCreate.setOpacity(100);
+		btnEdit.setOpacity(100);
+		btnSave.setOpacity(0);
+		btnNotEdit.setOpacity(0);
+		txtId.setEditable(false);
+    	txtPrice.setEditable(false);
+    	txtStatus.setEditable(false);
+    	cboxCategory.setEditable(false);
+	}
+	
+	public void stateEdit() {
+		btnCreate.setVisible(false);
+    	btnEdit.setVisible(false);
+    	btnSave.setDisable(true);
+		btnNotEdit.setDisable(true);
+//    	btnCreate.setDisable(true);
+//    	btnEdit.setDisable(true);
+//		btnSave.setDisable(false);
+//		btnNotEdit.setDisable(false);
+		btnCreate.setOpacity(0);
+		btnEdit.setOpacity(0);
+		btnSave.setOpacity(100);
+		btnNotEdit.setOpacity(100);
+		txtId.setEditable(true);
+    	txtPrice.setEditable(true);
+    	txtStatus.setEditable(true);
+    	cboxCategory.setEditable(true);
+	}
 }
 
